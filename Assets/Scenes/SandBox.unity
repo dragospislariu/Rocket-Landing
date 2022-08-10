@@ -306,14 +306,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1981463375, guid: 5926a0532da509c4da95b4ad865facaa, type: 3}
-      propertyPath: m_Drag
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1981463375, guid: 5926a0532da509c4da95b4ad865facaa, type: 3}
-      propertyPath: m_Constraints
-      value: 56
-      objectReference: {fileID: 0}
     - target: {fileID: 3480180752829815883, guid: 5926a0532da509c4da95b4ad865facaa, type: 3}
       propertyPath: m_Name
       value: Player
@@ -360,6 +352,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3480180752829815887, guid: 5926a0532da509c4da95b4ad865facaa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3480180753544633396, guid: 5926a0532da509c4da95b4ad865facaa, type: 3}
+      propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
