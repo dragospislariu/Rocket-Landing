@@ -4,13 +4,28 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    Rigidbody rb;
-    AudioSource audioSource;
+    // PARAMETERS - for tuning, typically set in the editor
+
+    // CACHE - e.g. references for readability or sspeed
+
+    // STATE - private instance (member) variables
+
+    [SerializeField] AudioClip thurstSound;
+    [SerializeField] AudioClip SideThurstSound;
     [SerializeField] float speed = 1;
     [SerializeField] float rotation = 1;
+    [SerializeField] ParticleSystem jetParticles;
+    [SerializeField] ParticleSystem leftThrusterParticles;
+    [SerializeField] ParticleSystem rightThrusterParticles;
+
+    Rigidbody rb;
+    AudioSource audioSource;
+    
     // Start is called before the first frame update
     void Start()
     {
+        
+
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
@@ -26,34 +41,92 @@ public class Movement : MonoBehaviour
     {
          if(Input.GetKey(KeyCode.Space))
         {
-            rb.AddRelativeForce(Vector3.up*speed*Time.deltaTime);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            StartThrusting();
         }
         else
         {
-            audioSource.Stop();
+            StopThrust();
         }
-         
-    }
 
+    }
     void ProcessRotation()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRotation(rotation);
+
+            LeftRotation();
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            ApplyRotation(-rotation);
+            RightRotation();
         }
-        
+        else
+        {
+            StopRotation();
+        }
+
+    }
+
+    private void StopThrust()
+    {
+        jetParticles.Stop();
+        audioSource.Stop();
+    }
+
+    private void StartThrusting()
+    {
+        rb.AddRelativeForce(Vector3.up * speed * Time.deltaTime);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(thurstSound);
+        }
+        if (!jetParticles.isPlaying)
+        {
+            jetParticles.Play();
+        }
+    }
+
+    
+
+    private void StopRotation()
+    {
+        rightThrusterParticles.Stop();
+        leftThrusterParticles.Stop();
+    }
+
+    private void RightRotation()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(SideThurstSound);
+        }
+
+        if (!leftThrusterParticles.isPlaying)
+        {
+            leftThrusterParticles.Play();
+        }
+
+        ApplyRotation(-rotation);
+    }
+
+    private void LeftRotation()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(SideThurstSound);
+        }
+
+        if (!rightThrusterParticles.isPlaying)
+        {
+            rightThrusterParticles.Play();
+        }
+
+        ApplyRotation(rotation);
     }
 
     private void ApplyRotation(float rotationThisFrame)
     {
+        
         rb.freezeRotation = true; // freezing rotation so we can manually rotate
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
         rb.freezeRotation = false;//unfreezing rotation so the physics system ca take over
